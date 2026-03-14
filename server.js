@@ -110,9 +110,9 @@ app.get('/api/products', (req, res) => {
   res.json(products);
 });
 
-// 后台：添加商品
-app.post('/api/admin/products', upload.single('image'), (req, res) => {
-  const { name, price, description, stock } = req.body;
+// 添加商品（简化版，不需要图片）
+app.post('/api/admin/products', (req, res) => {
+  const { name, price, description, stock, imageUrl } = req.body;
   
   if (!name || !price) {
     return res.status(400).json({ error: '请填写商品名称和价格' });
@@ -125,7 +125,7 @@ app.post('/api/admin/products', upload.single('image'), (req, res) => {
     price: parseFloat(price),
     description: description || '',
     stock: parseInt(stock) || 999,
-    image: req.file ? req.file.filename : '',
+    image: imageUrl || '', // 可以用图片URL
     isActive: true,
     created_at: Date.now()
   };
